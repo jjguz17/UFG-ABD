@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Comandas Comida Rapida</title>
+  <title>REVAT System</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -32,6 +32,7 @@
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <link rel="stylesheet" href="../plugins/select2/dist/css/select2.min.css"/>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -77,13 +78,14 @@
        
       <li class="treeview">
             <a href="#">
-              <i class="fa fa-edit"></i> <span>Proximamente</span>
+              <i class="fa fa-edit"></i> <span>REVAT</span>
               <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                   </span>
             </a>
             <ul class="treeview-menu">
-              <li><a href="../pag/comandas.php"><i class="fa fa-circle-o"></i> Comandas</a></li>
+              <li><a href="../pag/comandas.php"><i class="fa fa-circle-o"></i>Visitas</a></li>
+              <li><a href="../pag/comandas.php"><i class="fa fa-circle-o"></i>Accesos</a></li>
               
             </ul>
           </li>
@@ -96,15 +98,17 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
+
     <section class="content-header">
+      
       <h1>
-        Menu
-        <small>Comandas</small>
+        REVAT | 
+        <small>Administración</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Menu</a></li>
-        <li class="active">Comandas</li>
+        <li class="active">Administracion</li>
       </ol>
     </section>
 
@@ -120,7 +124,7 @@
             <!-- /.box-header -->
             <div class="box-body">
 
-              <div id="mitablaDatos"></div>
+              <div id="mitablaDatos"></div> <!-- ACÁ SE CARGARÁ LA SECCIÓN DE ACCESOS Y VISTAS -->
              
             </div>
             <!-- /.box-body -->
@@ -337,8 +341,11 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery 3 -->
+<!-- jQuery 3 
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+-->
+<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+
 <!-- Bootstrap 3.3.7 -->
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- DataTables -->
@@ -353,6 +360,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
 <script src="../sweetalert/sweetalert2.js"></script>
+<script src="../plugins/select2/dist/js/select2.min.js"></script>
 <!-- page script -->
 <script>
   $(function () {
@@ -372,15 +380,22 @@
         /*Cargando lista de roles*/
         $(document).ready(function () {
             debugger;
-            $('#mitablaDatos').load('comandasIndexTable.php');
+            $('#mitablaDatos').load('visitasIndexTable.php');
         });
 
-        function CargarNuevo() {
-            $('#mitablaDatos').load('comandasCreate.php');
+        function CargarNuevaVisita() {
+            $('#mitablaDatos').load('visitasCreate.php');
         }
-          function RegresarIndex() {
-            $('#mitablaDatos').load('comandasIndexTable.php');
+        function CargarNuevoAcceso() {
+            $('#mitablaDatos').load('accesosCreate.php');
         }
+          function RegresarVisitasIndex() {
+            $('#mitablaDatos').load('visitasIndexTable.php');
+        }
+          function RegresarVisitasIndex() {
+            $('#mitablaDatos').load('accesosIndexTable.php');
+        }
+
 
          function modificar(Id,Nombre,Estado) {
 

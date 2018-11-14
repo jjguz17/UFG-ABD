@@ -11,11 +11,13 @@
    require ("../conf/db.conf.php");
    require ("../servicio/conexion.class.php");
    require ("../modelo/combos.class.php");
+   require ("../modelo/entradas.class.php");
    
    
    
-   $obj_combos =  new combos();
-   $obj_combos->conectar();
+   
+   $obj_entradas =  new entradas();
+   $obj_entradas->conectar();
    
    ?>
 <div class="box-body">
@@ -25,15 +27,14 @@
       <div class="col-md-12">
          <div class="form-group">
             <select class="form-control select2" id="cbCombo" style="width: 100%;">
-               <option value="-1">Seleccione combo</option>
+               <option value="-1">Seleccione tipo de entrada</option>
                >
                <?php
-                  echo $obj_combos->ddl_combos();
+                  echo $obj_entradas->ddl_entradas();
                   ?>
             </select>
          </div>
       </div>
-     
    </div>
    <div class="row">
       <div class="col-md-12">

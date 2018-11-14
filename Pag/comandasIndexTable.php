@@ -1,7 +1,7 @@
 
 <div class="box-header">
     <a class="btn btn-primary btn-sm btn-lg" onclick="CargarNuevo()">
-        <i class="fa fa-plus-square"></i> &nbsp; Agregar comandas
+        <i class="fa fa-plus-square"></i> &nbsp; Agregar entrada
     </a>
 </div>
 
@@ -14,7 +14,7 @@
     $obj_comanda->conectar();
 ?>
             <div class="box-header">
-              <h3 class="box-title">Comandas Activas</h3>
+              <h3 class="box-title">Visitas creadas</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
