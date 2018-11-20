@@ -1,5 +1,6 @@
 <link href="../sweetalert/sweetalert2.css" rel="stylesheet" />
-<link href="../plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+
+ 
 <div class="box-header">
    <a class="btn btn-danger btn-sm btn-lg" onclick="RegresarIndex()">
    <i class="fa fa-plus-square"></i> &nbsp; Regresar
@@ -7,6 +8,7 @@
    <a class="btn btn-primary btn-sm btn-lg" onclick="InsertarComanda()">
    <i class="fa fa-plus-square"></i> &nbsp; Guardar
    </a>
+
 </div>
 <?php
    require ("../conf/db.conf.php");
@@ -68,7 +70,7 @@
                    <div class="form-group">
                       <label>Empleado a visitar</label>
                       <br><br>
-                      <select name="SearchEmpleadoInput" class="form-control input-md" id="SearchEmpleadoInput" required>
+                      <select name="SearchEmpleadoInput" class="js-example-basic-single" id="SearchEmpleadoInput" >
                         <option selected="" disabled="">Seleciona el empleado</option>
                         <?php
                         $empleadosArray = $obj_entradas->getEmployees(); //Se toma de entradas.class.php
@@ -79,10 +81,7 @@
 
                       </select>
 
-                      <select class="js-example-basic-single" name="state">
-                        <option value="AL">Alabama</option>
-                        <option value="WY">Wyoming</option>
-                      </select>
+                      
 
 
                    </div>
@@ -104,7 +103,7 @@
                       <label>¿Necesitará escolta?</label><br>
                       <label>Sí:</label><input type="checkbox" id="chkEscolta" onchange="ShowSeachrEscolta()">
                       <br>
-                      <select name="SearchEscoltaInput" class="form-control input-md" id="SearchEscoltaInput" hidden="true">
+                      <select name="SearchEscoltaInput" class="form-control input-md js-example-basic-single" id="SearchEscoltaInput" hidden="true">
                         <option selected="" disabled="">Seleciona el escolta</option>
                         <?php
                         $empleadosArray = $obj_entradas->getEmployees(); //Se toma de entradas.class.php
@@ -131,13 +130,16 @@
   </div>   
 </div>
 <script src="../sweetalert/sweetalert2.js"></script>
-<script src="../plugins/select2/dist/js/select2.min.js"></script>
+
+  
 <script>
     
 $(document).ready(function(){
     $("#imgen").hide();
-     $('.js-example-basic-single').select2();
+    //debugger;
+    $("#SearchEmpleadoInput").select2();
     $("#SearchEscoltaInput").select2();
+    //$(".js-example-basic-single").select2();
 });
 
 
@@ -185,10 +187,7 @@ $("#cbCombo").change(function(){
 
 });
     
-$(#SearchEscoltaInput).change(function{
-     var LikeEmployee = $('#SearchEscoltaInput').val();
-     alert(LikeEmployee);
-});
+
     
     
    function InsertarComanda(){

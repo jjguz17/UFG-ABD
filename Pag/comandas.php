@@ -32,7 +32,11 @@
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-  <link rel="stylesheet" href="../plugins/select2/dist/css/select2.min.css"/>
+  <script Src="https://code.jquery.com/jquery-3.3.1.js"></script>
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -105,6 +109,7 @@
         REVAT | 
         <small>Administración</small>
       </h1>
+
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Menu</a></li>
@@ -344,7 +349,7 @@
 <!-- jQuery 3 
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 -->
-<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+
 
 <!-- Bootstrap 3.3.7 -->
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -360,7 +365,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
 <script src="../sweetalert/sweetalert2.js"></script>
-<script src="../plugins/select2/dist/js/select2.min.js"></script>
+
 <!-- page script -->
 <script>
   $(function () {
@@ -379,7 +384,7 @@
  <script type="text/javascript">
         /*Cargando lista de roles*/
         $(document).ready(function () {
-            debugger;
+            
             $('#mitablaDatos').load('visitasIndexTable.php');
         });
 
