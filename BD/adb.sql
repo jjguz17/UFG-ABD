@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2018 at 08:03 AM
+-- Generation Time: Nov 27, 2018 at 09:50 PM
 -- Server version: 5.7.20-log
 -- PHP Version: 5.6.23
 
@@ -19,6 +19,83 @@ SET time_zone = "+00:00";
 --
 -- Database: `adb`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `c_escolta` ()  BEGIN
+ DECLARE done INT DEFAULT 0;
+ DECLARE nombre longtext;
+ DECLARE n2 longtext DEFAULT "";
+ DECLARE e CURSOR FOR SELECT t2.nombres_empleado FROM visitas t1 inner join empleados t2 on t1.empleado_escolta = t2.id_empleado; 
+ DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+
+OPEN e;
+
+fetch_loop: LOOP
+FETCH e INTO nombre;
+IF done THEN
+	LEAVE fetch_loop;
+END IF;
+SET n2 = CONCAT(nombre,",",n2);
+END LOOP;
+
+CLOSE e;
+
+SELECT 'Las personas que fueron escolata hoy son',n2;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `c_visita` ()  BEGIN
+ DECLARE done INT DEFAULT 0;
+ DECLARE count INT DEFAULT 0;
+ DECLARE code INT;
+ DECLARE visita_cnt CURSOR FOR SELECT visitas.id_visita FROM visitas WHERE  DATE(fechahora_ingreso) = DATE(NOW()); 
+ DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+
+OPEN visita_cnt;
+
+fetch_loop: LOOP
+FETCH visita_cnt INTO code;
+IF done THEN
+	LEAVE fetch_loop;
+END IF;
+SET count = count + 1;
+END LOOP;
+
+CLOSE visita_cnt;
+
+SELECT 'Numero de visitas en el dia son',count;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `t_registro_empleado` (IN `nemp` VARCHAR(50), IN `aemp` VARCHAR(50), IN `cargo` INT(11), IN `jefe` INT(11), IN `pais` INT(11), IN `estado` CHAR(1))  BEGIN
+DECLARE exit handler FOR sqlexception
+BEGIN
+	ROLLBACK;
+END;
+
+START TRANSACTION;
+
+INSERT into  empleados(id_empleado, nombres_empleado, apellidos_empleado, id_cargo,id_jefe_empleado, id_pais,estado_empleado)
+VALUES (NULL, nemp,aemp,cargo,jefe,pais,estado);
+
+COMMIT;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `t_registro_visita` (IN `nvisita` VARCHAR(100), IN `comvisita` VARCHAR(80), IN `empvisita` INT(11), IN `docvisita` VARCHAR(20), IN `movisita` VARCHAR(255), IN `empescolta` INT(11), IN `hingreso` DATETIME, IN `hegreso` DATETIME, IN `esta_visita` CHAR(1))  BEGIN
+DECLARE exit handler FOR sqlexception
+BEGIN
+	ROLLBACK;
+END;
+
+START TRANSACTION;
+
+INSERT into  visitas(id_visita, nombre_visita, compania_visita, id_empleado_visitado,doc_visita, movito_visita,empleado_escolta,fechahora_ingreso,fechahora_egreso,estado_visita)
+VALUES (NULL, nvisita,comvisita,empvisita,docvisita,movisita,empescolta,hingreso,hegreso,esta_visita);
+COMMIT;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -138,16 +215,18 @@ CREATE TABLE `empleados` (
   `id_cargo` int(11) NOT NULL,
   `id_jefe_empleado` int(11) DEFAULT NULL,
   `id_pais` int(11) DEFAULT NULL,
-  `estado_empleado` char(1) COLLATE utf8_spanish_ci NOT NULL COMMENT '1 caracter para declarar Activo o inactivo este registro'
+  `estado_empleado` char(1) COLLATE utf8_spanish_ci NOT NULL COMMENT '1 caracter para declarar Activo o inactivo este registro',
+  `disponible` tinyint(1) DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `empleados`
 --
 
-INSERT INTO `empleados` (`id_empleado`, `nombres_empleado`, `apellidos_empleado`, `id_cargo`, `id_jefe_empleado`, `id_pais`, `estado_empleado`) VALUES
-(1, 'Jairo Josue', 'Guzman Andres', 1, 1, 1, '1'),
-(2, 'Jose Osvaldo', 'Campos Jimenez', 1, 1, 1, '1');
+INSERT INTO `empleados` (`id_empleado`, `nombres_empleado`, `apellidos_empleado`, `id_cargo`, `id_jefe_empleado`, `id_pais`, `estado_empleado`, `disponible`) VALUES
+(1, 'Jairo Josue', 'Guzman Andres', 1, 1, 1, '1', 1),
+(2, 'Jose Osvaldo', 'Campos Jimenez', 1, 1, 1, '1', 1),
+(3, 'Javier', 'Castillo', 1, 1, 1, '1', 1);
 
 -- --------------------------------------------------------
 
@@ -269,7 +348,8 @@ CREATE TABLE `visitas` (
 --
 
 INSERT INTO `visitas` (`id_visita`, `nombre_visita`, `compania_visita`, `id_empleado_visitado`, `doc_visita`, `movito_visita`, `empleado_escolta`, `fechahora_ingreso`, `fechahora_egreso`, `estado_visita`) VALUES
-(1, 'Javier Ernesto Castillo Martinez', 'Claro', 1, '12345678-1', 'Probando', 2, '2018-11-08 00:00:00', '2018-11-05 00:00:00', '1');
+(1, 'Javier Ernesto Castillo Martinez', 'Claro', 1, '12345678-1', 'Probando', 2, '2018-11-08 00:00:00', '2018-11-05 00:00:00', '1'),
+(2, 'Juan Perez', 'Claro', 1, '02505078-2', 'Ventas', 3, '2018-11-27 13:39:30', '2018-11-27 14:39:30', '1');
 
 -- --------------------------------------------------------
 
@@ -307,6 +387,24 @@ CREATE TABLE `v_info_visita` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `v_nombre_empleado_activo`
+--
+CREATE TABLE `v_nombre_empleado_activo` (
+`Empleados Activos` varchar(101)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_tipo_acceso`
+--
+CREATE TABLE `v_tipo_acceso` (
+`Tipo de Acceso` varchar(25)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `v_info_emplado`
 --
 DROP TABLE IF EXISTS `v_info_emplado`;
@@ -330,6 +428,24 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `v_info_visita`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_info_visita`  AS  select `v`.`nombre_visita` AS `Nombre Visitante`,`v`.`compania_visita` AS `Compañia` from `visitas` `v` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_nombre_empleado_activo`
+--
+DROP TABLE IF EXISTS `v_nombre_empleado_activo`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_nombre_empleado_activo`  AS  select concat(`t1`.`nombres_empleado`,' ',`t1`.`apellidos_empleado`) AS `Empleados Activos` from `empleados` `t1` where (`t1`.`estado_empleado` = 1) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_tipo_acceso`
+--
+DROP TABLE IF EXISTS `v_tipo_acceso`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_tipo_acceso`  AS  select `t1`.`nombre_tipo_acceso` AS `Tipo de Acceso` from `tiposacceso` `t1` ;
 
 --
 -- Indexes for dumped tables
@@ -452,7 +568,7 @@ ALTER TABLE `departamentos`
 -- AUTO_INCREMENT for table `empleados`
 --
 ALTER TABLE `empleados`
-  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `empresas`
 --
@@ -482,7 +598,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT for table `visitas`
 --
 ALTER TABLE `visitas`
-  MODIFY `id_visita` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_visita` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Constraints for dumped tables
 --
