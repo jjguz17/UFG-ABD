@@ -11,7 +11,7 @@
  Target Server Version : 100134
  File Encoding         : 65001
 
- Date: 02/12/2018 17:59:09
+ Date: 02/12/2018 18:34:47
 */
 
 SET NAMES utf8mb4;
@@ -556,6 +556,33 @@ ON SCHEDULE
 EVERY '1' HOUR STARTS '2018-12-02 15:38:51'
 COMMENT 'desactiva accesos vencidos cada hora'
 DO CALL p_desactivar_accesos
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table accesos
+-- ----------------------------
+DROP TRIGGER IF EXISTS `log_UpdAcceso`;
+delimiter ;;
+CREATE TRIGGER `log_UpdAcceso` AFTER INSERT ON `accesos` FOR EACH ROW INSERT INTO t_auditoria_accesos SET id_Acceso = NEW.id_acceso, id_tipoAcceso = NEW.id_tipo_acceso, fecha_alta = NEW.FechaHora_Entrega, id_Empleado = NEW.id_empleado, estado_Acceso = NEW.estado_acceso
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table empleados
+-- ----------------------------
+DROP TRIGGER IF EXISTS `log_UpdEmpleado`;
+delimiter ;;
+CREATE TRIGGER `log_UpdEmpleado` AFTER INSERT ON `empleados` FOR EACH ROW INSERT INTO t_nuevo_empleado SET Nombre = NEW.nombres_empleado, Apellido = NEW.apellidos_empleado, id_Empleado = NEW.id_empleado
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table usuarios
+-- ----------------------------
+DROP TRIGGER IF EXISTS `log_downUser`;
+delimiter ;;
+CREATE TRIGGER `log_downUser` AFTER DELETE ON `usuarios` FOR EACH ROW INSERT INTO t_baja_usuarios SET id_usuario = OLD.Idusuario, nombre = OLD.nombre, usuario = OLD.usuario, estado = OLD.estado
 ;;
 delimiter ;
 
