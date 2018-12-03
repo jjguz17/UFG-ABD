@@ -89,7 +89,7 @@
             </a>
             <ul class="treeview-menu">
               <li><a href="../pag/comandas.php"><i class="fa fa-circle-o"></i>Visitas</a></li>
-              <li><a href="../pag/comandas.php"><i class="fa fa-circle-o"></i>Accesos</a></li>
+              <li><a href="#" onclick="RegresarAccesosIndex()"><i class="fa fa-circle-o"></i>Accesos</a></li>
               
             </ul>
           </li>
@@ -397,10 +397,10 @@
           function RegresarVisitasIndex() {
             $('#mitablaDatos').load('visitasIndexTable.php');
         }
-          function RegresarVisitasIndex() {
+          function RegresarAccesosIndex() {
             $('#mitablaDatos').load('accesosIndexTable.php');
         }
-
+ 
 
          function modificar(Id,Nombre,Estado) {
 
@@ -457,7 +457,7 @@ var myEstado =  false;
                                     text: data.responseText,
                                     type: "success"
                                 }).then(function () {
-                                   $('#mitablaDatos').load('comandasIndexTable.php');
+                                   $('#mitablaDatos').load('visitasIndexTable.php');
                                 });
                             } else {
                                 Sweetalert2("Fail", data.responseText, "error");
@@ -480,7 +480,7 @@ var myEstado =  false;
 
   debugger;
                 swal({
-                    title: "Proceso de Despacho",
+                    title: "Proceso de Estado",
                     text: "¿Esta Seguro que desea cambiar estado?",
                     type: 'warning',
                     showCancelButton: true,
@@ -512,7 +512,7 @@ var myEstado =  false;
                                     text: data.responseText,
                                     type: "success"
                                 }).then(function () {
-                                   $('#mitablaDatos').load('comandasIndexTable.php');
+                                   $('#mitablaDatos').load('visitasIndexTable.php');
                                 });
                             } else {
                                 Sweetalert2("Fail", data.responseText, "error");
@@ -528,6 +528,119 @@ var myEstado =  false;
                     }
                 })
  }
+
+ function EliminarAcceso(pId)
+ {
+   var ptipo_operacion =  6;
+
+  debugger;
+                swal({
+                    title: "Proceso de Despacho",
+                    text: "¿Esta Seguro que desea despechar la comanda?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Aceptar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonClass: 'btn btn-primary',
+                    cancelButtonClass: 'btn btn-danger',
+                    buttonsStyling: false
+
+                }).then(function () {
+                    $.ajax({
+                        type: "POST",
+                        cache: false,
+                        url: '../controlador/comandas.ctrl.php',
+                     
+                        data:{
+                        tipo_operacion:ptipo_operacion,
+                        IdComanda:pId
+                      
+                    },
+                        success: function (data) {
+                            if (data) {
+
+                                swal({
+                                    title: "Exito",
+                                    text: data.responseText,
+                                    type: "success"
+                                }).then(function () {
+                                   $('#mitablaDatos').load('accesosIndexTable.php');
+                                });
+                            } else {
+                                Sweetalert2("Fail", data.responseText, "error");
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            Sweetalert2("Comunicarse con IT", "se genero el siguiente error: " + errorThrown, "error");
+                        },
+                    });
+                }, function (dismiss) {
+                    if (dismiss === 'cancel') {
+
+                    }
+                })
+ }
+     
+     function modificarAcceso(pId,nombre,estado)
+ {
+   var ptipo_operacion =  5;
+
+  debugger;
+                swal({
+                    title: "Proceso de Estado Acceso",
+                    text: "¿Esta Seguro que desea cambiar estado?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Aceptar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonClass: 'btn btn-primary',
+                    cancelButtonClass: 'btn btn-danger',
+                    buttonsStyling: false
+
+                }).then(function () {
+                    $.ajax({
+                        type: "POST",
+                        cache: false,
+                        url: '../controlador/comandas.ctrl.php',
+                     
+                        data:{
+                        tipo_operacion:ptipo_operacion,
+                        IdComanda:pId,
+                            Estado:estado
+                      
+                    },
+                        success: function (data) {
+                          console.log(data);
+                            if (data) {
+
+                                swal({
+                                    title: "Exito",
+                                    text: data.responseText,
+                                    type: "success"
+                                }).then(function () {
+                                   $('#mitablaDatos').load('accesosIndexTable.php');
+                                });
+                            } else {
+                                Sweetalert2("Fail", data.responseText, "error");
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            Sweetalert2("Comunicarse con IT", "se genero el siguiente error: " + errorThrown, "error");
+                        },
+                    });
+                }, function (dismiss) {
+                    if (dismiss === 'cancel') {
+
+                    }
+                })
+ }
+
+
+
     </script>
 </body>
 </html>

@@ -10,6 +10,7 @@
     require ("../servicio/conexion.class.php");
     require ("../modelo/comandas.class.php");
     
+    global $obj_comanda;
     $obj_comanda  =  new comanda();
     $obj_comanda->conectar();
 ?>
@@ -21,13 +22,14 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>Nº</th>
-                  <th>Descripcion</th>
-                 <th>Total</th>
-                     <th>Registrada</th>
-                  <th>Estado</th>
-                 
-                  <th>Opciones</th>
+                <th>Nº</th>
+                <th>Visitante</th>
+                <th>Compañía</th>
+                <th>Visita a</th>
+                <th>Escolta</th>
+                <th>Ingreso</th>
+                <th>Estado</th>
+                <th>Opciones</th>
                 </tr>
                 </thead>
                 <tbody>

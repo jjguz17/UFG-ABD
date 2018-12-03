@@ -6,15 +6,15 @@
 </div>
 
 <?php
-    require ("../conf/db.conf.php");
-    require ("../servicio/conexion.class.php");
+    #require ("../conf/db.conf.php");
+    #require ("../servicio/conexion.class.php");
     require ("../modelo/comandas.class.php");
     
     $obj_comanda  =  new comanda();
     $obj_comanda->conectar();
 ?>
             <div class="box-header">
-              <h3 class="box-title">Visitas creadas</h3>
+              <h3 class="box-title">Accesos creadas</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

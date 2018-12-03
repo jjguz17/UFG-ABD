@@ -59,6 +59,15 @@
 
        }
 
+       function getAccessType(){
+            $sentencia_select   =   $this->obj_con->prepare("SELECT id_tipo_acceso, nombre_tipo_acceso FROM tiposacceso");    
+            $sentencia_select->execute();
+            $empleados = $sentencia_select->fetchAll(PDO::FETCH_ASSOC);
+
+            return $empleados;
+
+       }
+
    }
    
    ?>

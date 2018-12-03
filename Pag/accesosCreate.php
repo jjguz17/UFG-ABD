@@ -5,7 +5,7 @@
    <a class="btn btn-danger btn-sm btn-lg" onclick="RegresarIndex()">
    <i class="fa fa-plus-square"></i> &nbsp; Regresar
    </a>
-   <a class="btn btn-primary btn-sm btn-lg" onclick="InsertarVisita()">
+   <a class="btn btn-primary btn-sm btn-lg" onclick="InsertarAcceso()">
    <i class="fa fa-plus-square"></i> &nbsp; Guardar
    </a>
 
@@ -39,37 +39,11 @@
                 </div>
              </div>
              -->
-
-             <div class="row">
-                <div class="col-md-12">
-                   <div class="form-group">
-                      <label>Nombre de visita</label>
-                      <input class="form-control" id="txtNombreVisita" maxlength="350" type="text" placeholder="Nombre de visita">
-                   </div>
-                </div>
-             </div>
-             <div class="row">
-                <div class="col-md-12">
-                   <div class="form-group">
-                      <label>Compañía</label>
-                      <input class="form-control" id="txtCompaniaVisita" maxlength="350" type="text" placeholder="¿De dónde nos visita?">
-                   </div>
-                </div>
-             </div>
-             <div class="row">
-                <div class="col-md-12">
-                   <div class="form-group">
-                      <label>Motivo de visita</label>
-                      <textarea class="form-control rounded-0" id="txtMotivo" rows="3"></textarea>
-                   </div>
-                </div>
-             </div>
-
             <div class="row">
                 <div class="col-md-12">
                    <div class="form-group">
-                      <label>Empleado a visitar</label>
-                      <br><br>
+                      <label>Empleado</label>
+                      <br>
                       <select name="SearchEmpleadoInput" class="js-example-basic-single" id="SearchEmpleadoInput" >
                         <option selected="" disabled="">Seleciona el empleado</option>
                         <?php
@@ -88,41 +62,37 @@
                 </div>
              </div>
 
-             <div class="row">
+            <div class="row">
                 <div class="col-md-12">
                    <div class="form-group">
-                      <label>Documento de identidad</label>
-                      <input class="form-control" id="txtdocid" maxlength="350" type="text" placeholder="DUI, licencia o pasaporte">
-                   </div>
-                </div>
-             </div>
-
-             <div class="row">
-                <div class="col-md-12">
-                   <div class="form-group">
-                      <label>¿Necesitará escolta?</label><br>
-                      <label>Sí:</label>
-
-                      <input type="checkbox" id="chkEscolta" onchange="ShowSearchEscolta()">
-                      <br>
-                      
-                      <select name="SearchEscoltaInput" class="form-control input-md js-example-basic-single" id="SearchEscoltaInput">
-                        
-
-                        <option selected="" disabled="">Seleciona el escolta</option>
+                      <label>Tipo de acceso</label>
+                      <br><br>
+                      <select name="SearchAccesoInput" class="js-example-basic-single" id="SearchAccesoInput" >
+                        <option selected="" disabled="">Seleciona el tipo de acceso</option>
                         <?php
-                        $empleadosArray = $obj_entradas->getEmployees(); //Se toma de entradas.class.php
-                        foreach($empleadosArray as $row) {
-                        echo '<option value="'.$row["id_empleado"].'">'.$row["nombres_empleado"].'</option>';
+                        $tipoAccesoArray = $obj_entradas->getAccessType(); //Se toma de entradas.class.php
+                        foreach($tipoAccesoArray as $row) {
+                        echo '<option value="'.$row["id_tipo_acceso"].'">'.$row["nombre_tipo_acceso"].'</option>';
                         }
                         ?>
 
                       </select>
 
-
                    </div>
                 </div>
              </div>
+
+
+
+             <div class="row">
+                <div class="col-md-12">
+                   <div class="form-group">
+                      <label>Archivo de Autorización</label>
+                      <input class="form-control" id="txtAutorizacion" maxlength="350" type="text" placeholder="Archivo_Correo.eml">
+                   </div>
+                </div>
+             </div>
+             
 
           </div>  
       <div class="col-md-6">               
@@ -144,79 +114,18 @@ $(document).ready(function(){
     
     //debugger;
     $("#SearchEmpleadoInput").select2();
-    $("#SearchEscoltaInput").select2();
-    $("#SearchEscoltaInput").next(".select2-container").hide(); //Se oculta por defecto 
-    //$(".js-example-basic-single").select2(); 
-});
-
-
-//Si se cambia el checkbox de escolta se muestra o se esconde el SELECT para empleados
-$("#chkEscolta").change(function(){
-  if (this.checked) {
-        $("#SearchEscoltaInput").next(".select2-container").show();
-  }else{
-    $("#SearchEscoltaInput").next(".select2-container").hide();
-  }  
-});
-
-
-$("#cbCombo").change(function(){
-
-   var phdId = $("#cbCombo").val();
-   $("#txtNombre").val('');
-   $("#txtdescripcion").val('');
-   $("#txtprecio").val('');
-      
-
-        //debugger;
-        $.ajax({
-        type: "POST",
-        cache: false,
-        url: '../controlador/combos.ctrl.php',
-
-        data:{
-        phdId:phdId,
-
-        },
-        success: function (data) {
-            console.log(data);
-        if (data ) {
-          
-        var res = data.split("*");
-        $("#txtNombre").val(res[1]);
-        $("#txtdescripcion").val(res[2]);
-        $("#txtprecio").val(res[3]);
-            let urls =  "/Sistema/imagenes/" + res[4];
-            console.log(location.hostname + "/Sistema/imagenes/" + res[4]);
-        $("#imgen").attr("src", urls);
-        $("#imgen").show();         
-        } else {
-
-        }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-
-        },
-        });
-
-
+    $("#SearchAccesoInput").select2();
 
 });
     
-
     
-    
-   function InsertarVisita(){
+   function InsertarAcceso(){
    
    //debugger;
-    var ptipo_operacion= 1;
-    var txtNombreVisita = $('#txtNombreVisita').val();
-    var txtCompaniaVisita = $('#txtCompaniaVisita').val();
-    var txtMotivo = $('#txtMotivo').val();
+    var ptipo_operacion= 4;
     var SearchEmpleadoInput = $('#SearchEmpleadoInput').val();
-    var txtdocid = $('#txtdocid').val();
-    var SearchEscoltaInput = $('#SearchEscoltaInput').val();
-   
+    var SearchAccesoInput = $('#SearchAccesoInput').val();
+    var txtAutorizacion = $('#txtAutorizacion').val();
                /*Realizando validacion de datos*/
                if (ValidarDatos() == true)
                {
@@ -243,12 +152,9 @@ $("#cbCombo").change(function(){
                         
                            data:{
                            tipo_operacion:ptipo_operacion,
-                           txtNombreVisita:txtNombreVisita,
-                           txtCompaniaVisita:txtCompaniaVisita,
-                           txtMotivo:txtMotivo, 
                            SearchEmpleadoInput:SearchEmpleadoInput,
-                           txtdocid:txtdocid,
-                           SearchEscoltaInput:SearchEscoltaInput
+                           SearchAccesoInput:SearchAccesoInput,
+                           txtAutorizacion:txtAutorizacion
                        },
                            success: function (data) {
                               console.log(data);
@@ -258,7 +164,7 @@ $("#cbCombo").change(function(){
                                        text: data.responseText,
                                        type: "success"
                                    }).then(function () {
-                                      $('#mitablaDatos').load('visitasIndexTable.php');
+                                      $('#mitablaDatos').load('AccesosIndexTable.php');
                                    });
                                } else {
                                    Sweetalert2("Fail", data.responseText, "error");

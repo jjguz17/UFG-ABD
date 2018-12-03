@@ -7,31 +7,45 @@
     $obj_comandas = new comanda();
  
     if($obj_comandas->conectar()):
-       $operacion =  (integer) $_REQUEST['tipo_operacion'];
 
-        $txtNombre = (string) trim($_REQUEST['txtNombre']);
+        $operacion = (integer) $_REQUEST['tipo_operacion'];
 
-        $txtdescripcion = (string) trim($_REQUEST['txtdescripcion']);
-
-       $txtprecio = (string) trim($_REQUEST['txtprecio']);
-
-        $cbCombo = (string) trim($_REQUEST['cbCombo']);
-
-
-
-        $array_info = array($cbCombo,$txtdescripcion,$txtprecio);
-        
         if($operacion == 1)://INSERTAR
+                 ######################## VISITAS ###############################
+            $txtNombreVisita =  (string) trim($_REQUEST['txtNombreVisita']);
+            $txtCompaniaVisita = (string) trim($_REQUEST['txtCompaniaVisita']);
+            $SearchEmpleadoInput = (integer) $_REQUEST['SearchEmpleadoInput'];
+            $txtdocid = (string) trim($_REQUEST['txtdocid']);
+            $txtMotivo = (string) trim($_REQUEST['txtMotivo']);
+            $SearchEscoltaInput = $_REQUEST['SearchEscoltaInput'];
+            ($SearchEscoltaInput=="")?$SearchEscoltaInput = $SearchEmpleadoInput:$SearchEscoltaInput = (integer) $_REQUEST['SearchEscoltaInput'];
+
+        $array_info = array($txtNombreVisita,$txtCompaniaVisita,$SearchEmpleadoInput,$txtdocid,$txtMotivo,$SearchEscoltaInput);
+
             $bandera = $obj_comandas->new_comandas($array_info);
-        elseif($operacion == 2)://MODIFICAR
+
+
+        elseif($operacion == 2)://DEPACHAR
             $bandera = $obj_comandas->despachar_comandas($_REQUEST['IdComanda']);
-        elseif($operacion == 3)://ELIMINAR
+
+        elseif($operacion == 3)://cAMBIAR ESTADO VISITA
             $bandera = $obj_comandas->cambiarestado_comandas($_REQUEST['IdComanda'],$_REQUEST['Estado']);
-        elseif($operacion == 4)://ELIMINAR
-            $bandera = $obj_comandas->delete_sucursalcomandas($_REQUEST['hdIdcomandas']);
-        elseif($operacion == 5)://ELIMINAR
-           // $bandera = $obj_comandas->insert_sucursalcomandas($_REQUEST['hdIdcomandas'],$_REQUEST['hdIdsucursal']);
-             $bandera = $obj_comandas->insert_sucursalcomandas($_REQUEST['hdIdcomandas'],$_REQUEST['hdIdsucursal']);
+
+        elseif($operacion == 4)://INSERTAR ACCESO
+
+             ######################## ACCESOS ###############################
+            $SearchEmpleadoInput = (integer) $_REQUEST['SearchEmpleadoInput'];
+            $SearchAccesoInput = (integer) $_REQUEST['SearchAccesoInput'];
+            $txtAutorizacion = (string) ("../Documentos/Autorizaciones/"+ $_REQUEST['txtAutorizacion']);
+            $array_acceso = array($SearchAccesoInput,$SearchEmpleadoInput,  $txtAutorizacion);
+
+            $bandera = $obj_comandas->new_acceso($array_acceso);
+
+        elseif($operacion == 5)://CAMBIAR ESTADO ACCESO
+
+             $bandera = $obj_comandas->cambiarestado_acceso($_REQUEST['IdComanda'],$_REQUEST['Estado']);
+        elseif($operacion == 6):
+             $bandera = $obj_comandas->despachar_acceso($_REQUEST['IdComanda']);
         endif;
         
         if($bandera == 1 && $operacion == 1):
