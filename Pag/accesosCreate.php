@@ -2,7 +2,7 @@
 
  
 <div class="box-header">
-   <a class="btn btn-danger btn-sm btn-lg" onclick="RegresarIndex()">
+   <a class="btn btn-danger btn-sm btn-lg" onclick="RegresarAccesosIndex()">
    <i class="fa fa-plus-square"></i> &nbsp; Regresar
    </a>
    <a class="btn btn-primary btn-sm btn-lg" onclick="InsertarAcceso()">
