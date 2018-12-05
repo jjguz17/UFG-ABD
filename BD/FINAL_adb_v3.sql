@@ -1,4 +1,4 @@
-/*
+﻿/*
  Navicat Premium Data Transfer
 
  Source Server         : YamatakaLocal
@@ -252,7 +252,7 @@ CREATE TABLE `visitas`  (
   `compania_visita` varchar(80) CHARACTER SET utf8 COLLATE utf8_spanish_ci NULL DEFAULT NULL COMMENT 'Empresa a la que pertenece el visitante',
   `id_empleado_visitado` int(11) NOT NULL COMMENT 'Id de empleado que se visitara',
   `doc_visita` varchar(20) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL COMMENT 'Documento identificador legal de la visita como DUI, N Licencia de Conducir, Pasaporte',
-  `movito_visita` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NULL DEFAULT NULL COMMENT 'Detalle de la razon de visita',
+  `motivo_visita` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NULL DEFAULT NULL COMMENT 'Detalle de la razon de visita',
   `empleado_escolta` int(11) NULL DEFAULT NULL COMMENT 'Si necesitará escolta se coloca el empleado que lo escoltara',
   `fechahora_ingreso` datetime(0) NULL DEFAULT NULL,
   `fechahora_egreso` datetime(0) NULL DEFAULT NULL,
